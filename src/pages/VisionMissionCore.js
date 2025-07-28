@@ -1606,7 +1606,7 @@ const VisionSection = () => {
 
 
 
-    
+
 
   const defaultMissionImage = 'https://gnitipu.in/front_assets/images/mission%20image.png';
   const defaultMissionDescription = `Our mission is to deliver innovative and high-quality solutions that enhance the lives of our customers.
@@ -1655,20 +1655,20 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     },
   ];
 
-const handleAddMoreOne = () => {
-  setTempForms([{ preview: "", description: "" }]);
-  setTempMissionForms([{ preview: "", description: "" }]);
-  setTempCoreForms([{ preview: "", title: "" }]);
-  setShowTempSection(true);
-};
+  const handleAddMoreOne = () => {
+    setTempForms([{ preview: "", description: "" }]);
+    setTempMissionForms([{ preview: "", description: "" }]);
+    setTempCoreForms([{ preview: "", title: "" }]);
+    setShowTempSection(true);
+  };
 
 
-const handleRemoveAllSections = () => {
-  setTempForms([]);
-  setTempMissionForms([]);
-  setTempCoreForms([]);
-  setShowTempSection(false);
-};
+  const handleRemoveAllSections = () => {
+    setTempForms([]);
+    setTempMissionForms([]);
+    setTempCoreForms([]);
+    setShowTempSection(false);
+  };
 
 
   // vision
@@ -1870,6 +1870,8 @@ const handleRemoveAllSections = () => {
     setTempMissionForms(updated);
   };
 
+
+
   const handleDeleteMission = async (id) => {
     try {
       const token = localStorage.getItem('token');
@@ -1966,8 +1968,84 @@ const handleRemoveAllSections = () => {
       alert('Error submitting missions');
     }
   };
+
+
+ const handleSubmitAllVMC = async () => {
+  try {
+    const formData = new FormData();
+
+    // ✅ 1. Build vision data + append image
+    const visionData = tempForms.map((v, i) => {
+      const imageKey = `visionImage_${i}`;
+      if (v.file) formData.append(imageKey, v.file);
+      return {
+        description: v.description,
+        imageUrl: imageKey,
+      };
+    });
+
+    // ✅ 2. Build mission data + append image
+    const missionData = tempMissionForms.map((m, i) => {
+      const imageKey = `missionImage_${i}`;
+      if (m.file) formData.append(imageKey, m.file);
+      return {
+        description: m.description,
+        imageUrl: imageKey,
+      };
+    });
+
+    const coreData = tempCoreForms.map((c, i) => {
+      const imageKey = `coreImage_${i}`;
+      if (c.file) formData.append(imageKey, c.file);
+      return {
+        title: c.title,
+        imageUrl: imageKey,
+      };
+    });
+
+    const data = {
+      vision: visionData,
+      mission: missionData,
+      core: coreData,
+    };
+
+    // ✅ 5. Append JSON data
+    formData.append("data", JSON.stringify(data));
+
+    // 🔐 Token
+    const token = localStorage.getItem("token");
+
+    // ✅ Debug log
+    console.log("✅ Final Combined JSON Data:", data);
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
+
+    // ✅ 6. Submit
+    await axios.post("http://localhost:5000/api/vmc/vision", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    alert("✅ Vision, Mission, and Core Values submitted successfully!");
+    setTempForms([]);
+    setTempMissionForms([]);
+    setTempCoreForms([]);
+    fetchData();
+    fetchMissions();
+    fetchCoreValues();
+  } catch (err) {
+    console.error("❌ Submit error:", err);
+    alert("Error submitting Vision, Mission, and Core Values");
+  }
+};
+
+
   // -----------------------------------------------mission section end---------------------------------------------
-  // core values section start
+  // core values section start                                                                      
+
   const fetchCoreValues = async () => {
     try {
       console.log("Fetching core values...");
@@ -2157,6 +2235,7 @@ const handleRemoveAllSections = () => {
     }
   };
 
+
   return (
 
     <div className="card mb-4 shadow-sm border-0">
@@ -2287,13 +2366,13 @@ const handleRemoveAllSections = () => {
           </div>
         ))}
 
-        {tempForms.length > 0 && (
+        {/* {tempForms.length > 0 && (
           <div className="text-end">
             <button className="btn btn-primary" onClick={handleSubmitAll}>
               Submit All Visions
             </button>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* mission start */}
@@ -2532,13 +2611,13 @@ const handleRemoveAllSections = () => {
             </div>
           ))}
 
-          {tempMissionForms.length > 0 && (
+          {/* {tempMissionForms.length > 0 && (
             <div className="text-end">
               <button className="btn btn-primary" onClick={handleSubmitAllMissions}>
                 Submit All Missions
               </button>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       {/* mission end */}
@@ -2736,17 +2815,25 @@ const handleRemoveAllSections = () => {
             </div>
           ))}
 
-          {tempCoreForms.length > 0 && (
+          {/* {tempCoreForms.length > 0 && (
             <div className="text-end">
               <button className="btn btn-primary" onClick={handleSubmitAllCores}>
                 Submit All Core Values
               </button>
             </div>
+          )} */}
+          {tempForms.length > 0 && (
+            <div className="text-end">
+              <button className="btn btn-primary" onClick={handleSubmitAllVMC}>
+                Submit All Core Values
+              </button>
+            </div>
           )}
+
         </div>
       </div>
       {/* ----------------------------------------------------------------------------------------------------------------- */}
-   
+
 
       <div className="text-end my-3">
         <button className="btn btn-success" onClick={handleAddMoreOne}>
