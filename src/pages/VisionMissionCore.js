@@ -1602,7 +1602,11 @@ const VisionSection = () => {
   const [editingCoreIndex, setEditingCoreIndex] = useState(null);
   const [editedCoreImage, setEditedCoreImage] = useState(null);
   const [editedCoreTitle, setEditedCoreTitle] = useState('');
+  const [showTempSection, setShowTempSection] = useState(false);
 
+
+
+    
 
   const defaultMissionImage = 'https://gnitipu.in/front_assets/images/mission%20image.png';
   const defaultMissionDescription = `Our mission is to deliver innovative and high-quality solutions that enhance the lives of our customers.
@@ -1650,6 +1654,22 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       image: "https://cdn-icons-png.flaticon.com/512/4359/4359879.png"
     },
   ];
+
+const handleAddMoreOne = () => {
+  setTempForms([{ preview: "", description: "" }]);
+  setTempMissionForms([{ preview: "", description: "" }]);
+  setTempCoreForms([{ preview: "", title: "" }]);
+  setShowTempSection(true);
+};
+
+
+const handleRemoveAllSections = () => {
+  setTempForms([]);
+  setTempMissionForms([]);
+  setTempCoreForms([]);
+  setShowTempSection(false);
+};
+
 
   // vision
   const fetchData = async () => {
@@ -2725,7 +2745,529 @@ Together, we envision a world where progress is inclusive and opportunity is acc
           )}
         </div>
       </div>
+      {/* ----------------------------------------------------------------------------------------------------------------- */}
+   
+
+      <div className="text-end my-3">
+        <button className="btn btn-success" onClick={handleAddMoreOne}>
+          Add More One
+        </button>
+      </div>
+
+      <div className="card mb-4 shadow-sm border-0">
+        <div className="card-header bg-white d-flex justify-content-between align-items-center">
+          <div className="w-100 text-center">
+            <h2 className="text-primary fw-bold mb-0">Visions</h2>
+          </div>
+          <button className="btn btn-sm btn-outline-primary" onClick={handleAddVisionBlock}>
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        </div>
+
+        <div className="card-body">
+          {/* Submitted Visions */}
+          {submittedVisions.map((v) =>
+            v.vision.map((item, i) => (
+              <div
+                key={`${v.id}-${i}`}
+                className="mb-4 p-3 rounded shadow-sm bg-light d-flex align-items-start justify-content-between"
+              >
+                <div style={{ width: '400px', marginRight: '30px' }}>
+                  <img
+                    src={item.preview}
+                    alt="Submitted Vision"
+                    className="img-fluid mb-2"
+                    style={{
+                      width: '100%',
+                      height: '250px',
+                      objectFit: 'cover',
+                      borderRadius: '8px',
+                      border: '1px solid #ddd',
+                    }}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ textAlign: 'justify', fontSize: '16px', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
+                    {item.description}
+                  </p>
+                </div>
+                <button className="btn btn-sm btn-danger mt-2" onClick={() => handleDeleteVision(v.id)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            ))
+          )}
+
+          {/* TEMP Vision Inputs (newly added but not submitted yet) */}
+          {tempForms.map((vision, index) => (
+            <div
+              key={`temp-${index}`}
+              className="mb-4 p-3 rounded shadow-sm bg-light d-flex align-items-start justify-content-between"
+            >
+              <div style={{ width: '400px', marginRight: '30px' }}>
+                <label htmlFor={`temp-image-${index}`} style={{ display: 'block', height: '250px', cursor: 'pointer' }}>
+                  {vision.preview ? (
+                    <img
+                      src={vision.preview}
+                      alt="Preview"
+                      className="img-fluid mb-2"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                        border: '1px solid #ddd',
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="d-flex justify-content-center align-items-center text-muted mb-2"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: '#f8f9fa',
+                        border: '1px dashed #ccc',
+                        borderRadius: '8px',
+                      }}
+                    >
+                      Click to select image
+                    </div>
+                  )}
+                </label>
+                <input
+                  id={`temp-image-${index}`}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleTempImageChange(index, e.target.files[0])}
+                  style={{ display: 'none' }}
+                />
+              </div>
+
+              <div style={{ flex: 1, position: 'relative' }}>
+                <textarea
+                  rows={4}
+                  className="form-control"
+                  placeholder={`Enter description for Vision ${index + 2}`}
+                  value={vision.description}
+                  onChange={(e) => handleTempDescriptionChange(index, e.target.value)}
+                />
+                <button className="btn btn-sm btn-danger mt-2" onClick={() => handleDeleteTempForm(index)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {tempForms.length > 0 && (
+            <div className="text-end">
+              <button className="btn btn-primary" onClick={handleSubmitAll}>
+                Submit All Visions
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* mission start */}
+        <div className="card mb-4 shadow-sm border-0">
+          <div className="card-header bg-white d-flex justify-content-between align-items-center">
+            <div className="w-100 text-center">
+              <h2 className="text-primary fw-bold mb-0">Missions</h2>
+            </div>
+            <button className="btn btn-sm btn-outline-primary" onClick={handleAddMissionBlock}>
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          </div>
+
+          <div className="card-body">
+            {/* Submitted Missions */}
+            {submittedMissions.map((m) =>
+              m.mission.map((item, i) => {
+                const isEditing = editingMissionId === m.id && editingMissionIndex === i;
+
+                const getPreviewUrl = () => {
+                  if (isEditing && editedImage) {
+                    return URL.createObjectURL(editedImage);
+                  } else if (item.preview && item.preview.trim() !== "") {
+                    return item.preview;
+                  } else {
+                    return null;
+                  }
+                };
+
+                const previewUrl = getPreviewUrl();
+
+                return (
+                  <div
+                    key={`${m.id}-${i}`}
+                    className="mb-4 p-3 rounded shadow-sm bg-light d-flex align-items-start"
+                    style={{ gap: "20px" }}
+                  >
+                    {/* ✅ LEFT: Image */}
+                    <div style={{ width: "400px" }}>
+                      {isEditing ? (
+                        <>
+                          <input
+                            type="file"
+                            className="form-control mb-2"
+                            onChange={(e) => setEditedImage(e.target.files[0])}
+                          />
+                          {previewUrl && (
+                            <img
+                              src={previewUrl}
+                              alt="Edited"
+                              className="img-fluid"
+                              style={{
+                                width: "100%",
+                                height: "250px",
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                                border: "1px solid #ddd",
+                              }}
+                            />
+                          )}
+                        </>
+                      ) : (
+                        previewUrl && (
+                          <img
+                            src={previewUrl}
+                            alt="Submitted Mission"
+                            className="img-fluid"
+                            style={{
+                              width: "100%",
+                              height: "250px",
+                              objectFit: "cover",
+                              borderRadius: "8px",
+                              border: "1px solid #ddd",
+                            }}
+                          />
+                        )
+                      )}
+                    </div>
+
+                    {/* ✅ CENTER: Description */}
+                    <div style={{ flex: 1 }}>
+                      {isEditing ? (
+                        <textarea
+                          rows={4}
+                          className="form-control"
+                          value={editedDescription}
+                          onChange={(e) => setEditedDescription(e.target.value)}
+                        />
+                      ) : (
+                        <p
+                          style={{
+                            textAlign: "justify",
+                            fontSize: "16px",
+                            lineHeight: "1.6",
+                            whiteSpace: "pre-line",
+                            margin: 0,
+                          }}
+                        >
+                          {item.description}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* ✅ RIGHT: Actions */}
+                    <div className="d-flex flex-column align-items-end gap-2">
+                      {isEditing ? (
+                        <>
+                          <button
+                            className="btn btn-sm btn-success"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleSaveMission();
+                            }}
+                          >
+                            Save
+                          </button>
+                          <button
+                            className="btn btn-sm btn-secondary"
+                            onClick={() => {
+                              setEditingMissionId(null);
+                              setEditingMissionIndex(null);
+                              setEditedDescription("");
+                              setEditedImage(null);
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <div className="d-flex align-items-center gap-2">
+                          <button
+                            className="btn btn-sm btn-primary"
+                            onClick={() => handleEditMission(m.id, i)}
+                          >
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={() => handleDeleteMission(m.id)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+
+
+            {/* Temp Missions */}
+            {tempMissionForms.map((mission, index) => (
+              <div
+                key={`temp-mission-${index}`}
+                className="mb-4 p-3 rounded shadow-sm bg-light d-flex align-items-start justify-content-between"
+              >
+                <div style={{ width: '400px', marginRight: '30px' }}>
+                  <label htmlFor={`temp-mission-image-${index}`} style={{ display: 'block', height: '250px', cursor: 'pointer' }}>
+                    {mission.preview ? (
+                      <img
+                        src={mission.preview}
+                        alt="Preview"
+                        className="img-fluid mb-2"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          borderRadius: '8px',
+                          border: '1px solid #ddd',
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="d-flex justify-content-center align-items-center text-muted mb-2"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: '#f8f9fa',
+                          border: '1px dashed #ccc',
+                          borderRadius: '8px',
+                        }}
+                      >
+                        Click to select image
+                      </div>
+                    )}
+                  </label>
+                  <input
+                    id={`temp-mission-image-${index}`}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleTempMissionImageChange(index, e.target.files[0])}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+
+                <div style={{ flex: 1, position: 'relative' }}>
+                  <textarea
+                    rows={4}
+                    className="form-control"
+                    placeholder={`Enter description for Mission ${index + 2}`}
+                    value={mission.description}
+                    onChange={(e) => handleTempMissionDescriptionChange(index, e.target.value)}
+                  />
+                  <button className="btn btn-sm btn-danger mt-2" onClick={() => handleDeleteTempMissionForm(index)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {tempMissionForms.length > 0 && (
+              <div className="text-end">
+                <button className="btn btn-primary" onClick={handleSubmitAllMissions}>
+                  Submit All Missions
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* mission end */}
+
+        {/* core values */}
+        <div className="card mb-4 shadow-sm border-0">
+          <div className="card-header bg-white d-flex justify-content-between align-items-center">
+            <div className="w-100 text-center">
+              <h2 className="text-primary fw-bold mb-0">CoreValues</h2>
+            </div>
+            <button className="btn btn-sm btn-outline-primary" onClick={handleAddCoreBlock}>
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          </div>
+
+          {/* Default core Block */}
+          <div className="card-body">
+
+
+            {/* Submitted Cores */}
+            {submittedCoreValues.length > 0 && (
+              <div className="row">
+                {submittedCoreValues.flatMap((block) =>
+                  block.values.map((item, i) => {
+                    const isEditing = editingCoreId === block.id && editingCoreIndex === i;
+
+                    return (
+                      <div key={`${block.id}-${i}`} className="col-md-3 col-sm-6 mb-4 text-center">
+                        <div
+                          className="p-3 shadow-sm bg-light rounded d-flex flex-column align-items-center"
+                          style={{ height: '100%', position: 'relative' }}
+                        >
+                          {isEditing ? (
+                            <>
+                              <input
+                                type="file"
+                                className="form-control mb-2"
+                                onChange={(e) => setEditedCoreImage(e.target.files[0])}
+                              />
+                              <img
+                                src={
+                                  editedCoreImage
+                                    ? URL.createObjectURL(editedCoreImage)
+                                    : item.preview
+                                }
+                                alt="Edited Core"
+                                style={{
+                                  width: '100px',
+                                  height: '100px',
+                                  objectFit: 'cover',
+                                  borderRadius: '50%',
+                                  border: '1px solid #ddd',
+                                  padding: '5px',
+                                }}
+                              />
+                              <input
+                                type="text"
+                                className="form-control mt-2"
+                                value={editedCoreTitle}
+                                onChange={(e) => setEditedCoreTitle(e.target.value)}
+                              />
+                              <div className="mt-2 d-flex gap-2">
+                                <button className="btn btn-sm btn-success" onClick={handleSaveCore}>
+                                  Save
+                                </button>
+                                <button
+                                  className="btn btn-sm btn-secondary"
+                                  onClick={() => {
+                                    setEditingCoreId(null);
+                                    setEditingCoreIndex(null);
+                                    setEditedCoreImage(null);
+                                    setEditedCoreTitle('');
+                                  }}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <img
+                                src={item.preview}
+                                alt="Submitted Core"
+                                style={{
+                                  width: '100px',
+                                  height: '100px',
+                                  objectFit: 'cover',
+                                  borderRadius: '50%',
+                                  border: '1px solid #ddd',
+                                  padding: '5px',
+                                }}
+                              />
+                              <h6 className="fw-semibold mt-3">{item.title}</h6>
+                              <div className="d-flex gap-2 mt-2">
+                                <button
+                                  className="btn btn-sm btn-primary"
+                                  onClick={() => handleEditCore(block.id, i)}
+                                >
+                                  <FontAwesomeIcon icon={faEdit} />
+                                </button>
+                                <button
+                                  className="btn btn-sm btn-danger"
+                                  onClick={() => handleDeleteCore(block.id)}
+                                >
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+
+            {/* Temp Core Forms */}
+            {tempCoreForms.map((core, index) => (
+              <div
+                key={`temp-core-${index}`}
+                className="mb-3 p-3 rounded shadow-sm bg-light d-flex align-items-center justify-content-between"
+              >
+                <div className="d-flex gap-3 align-items-center">
+                  <label htmlFor={`temp-core-image-${index}`} style={{ cursor: 'pointer' }}>
+                    {core.preview ? (
+                      <img
+                        src={core.preview}
+                        alt="Preview"
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          objectFit: 'cover',
+                          borderRadius: '50%',
+                          border: '1px solid #ccc',
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="d-flex justify-content-center align-items-center text-muted"
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          backgroundColor: '#f8f9fa',
+                          border: '1px dashed #ccc',
+                          borderRadius: '50%',
+                        }}
+                      >
+                        Click to upload
+                      </div>
+                    )}
+                  </label>
+                  <input
+                    id={`temp-core-image-${index}`}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleTempCoreImageChange(index, e.target.files[0])}
+                    style={{ display: 'none' }}
+                  />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder={`Enter title for Core Value ${index + 1}`}
+                    value={core.title}
+                    onChange={(e) => handleTempCoreTitleChange(index, e.target.value)}
+                  />
+                </div>
+                <button className="btn btn-sm btn-danger ms-3" onClick={() => handleDeleteTempCoreForm(index)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            ))}
+
+            {tempCoreForms.length > 0 && (
+              <div className="text-end">
+                <button className="btn btn-primary" onClick={handleSubmitAllCores}>
+                  Submit All Core Values
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
+
   );
 };
 
