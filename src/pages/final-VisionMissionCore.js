@@ -987,43 +987,8 @@ Together, we envision a world where progress is inclusive and opportunity is acc
   };
 
 
-  // PDF Download logic
-  const downloadPDF = async () => {
-    const jsPDF = (await import('jspdf')).jsPDF;
-    const html2canvas = (await import('html2canvas')).default;
-    const doc = new jsPDF('p', 'pt', 'a4');
-    const pdfContent = document.getElementById('vmc-pdf-content');
-    if (!pdfContent) return;
-    // Add .pdf-exporting class to hide .no-pdf elements
-    pdfContent.classList.add('pdf-exporting');
-    // Wait a tick to ensure DOM updates
-    await new Promise((resolve) => setTimeout(resolve, 50));
-    await html2canvas(pdfContent, { scale: 2, useCORS: true, allowTaint: false }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const imgProps = doc.getImageProperties(imgData);
-      const pdfWidth = doc.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      doc.save('Vision-Mission-Core.pdf');
-    });
-    // Remove the class after export
-    pdfContent.classList.remove('pdf-exporting');
-  };
-
   return (
     <>
-    {/* Download PDF Button */}
-    <div className="d-flex justify-content-end mb-3">
-      <button className="btn btn-outline-danger" onClick={downloadPDF}>
-        <i className="fa fa-download me-2"></i>Download PDF
-      </button>
-    </div>
-    {/* PDF Content Wrapper */}
-    <div id="vmc-pdf-content">
-      {/* Inline style for html2canvas PDF export */}
-      <style>
-        {`.pdf-exporting .no-pdf { display: none !important; }`}
-      </style>
     <div className="card mb-4 shadow-sm border-0">
       <div className="card-header bg-white d-flex justify-content-between align-items-center">
         <div className="w-100 text-center">
@@ -1103,7 +1068,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                     onChange={(e) => setEditedVisionDescription(e.target.value)}
                   />
                   <div className="d-flex gap-2 mt-2">
-                    <button className="btn btn-sm btn-success no-pdf" onClick={async () => {
+                    <button className="btn btn-sm btn-success" onClick={async () => {
                       // Save as new record
                       const formData = new FormData();
                       let visionData;
@@ -1138,7 +1103,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                     }}>
                       Save
                     </button>
-                    <button className="btn btn-sm btn-secondary no-pdf" onClick={() => {
+                    <button className="btn btn-sm btn-secondary" onClick={() => {
                       setEditingVisionId(null);
                       setEditedVisionDescription('');
                       setEditedVisionImage(null);
@@ -1280,7 +1245,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                   {isEditing ? (
                     <>
                       <button
-                        className="btn btn-sm btn-success no-pdf"
+                        className="btn btn-sm btn-success"
                         onClick={(e) => {
                           e.preventDefault();
                           handleSaveVision();
@@ -1289,7 +1254,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                         Save
                       </button>
                       <button
-                        className="btn btn-sm btn-secondary no-pdf"
+                        className="btn btn-sm btn-secondary"
                         onClick={() => {
                           setEditingVisionId(null);
                           setEditingVisionIndex(null);
@@ -1303,7 +1268,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                   ) : (
                     <div className="d-flex align-items-center gap-2">
                       <button
-                        className="btn btn-sm btn-primary no-pdf"
+                        className="btn btn-sm btn-primary"
                         onClick={() => handleEditVision(v.id, i)}
                       >
                         <FontAwesomeIcon icon={faEdit} />
@@ -1402,7 +1367,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                       onChange={(e) => setEditedDescription(e.target.value)}
                     />
                     <div className="d-flex gap-2 mt-2">
-                    <button className="btn btn-sm btn-success no-pdf" onClick={async () => {
+                      <button className="btn btn-sm btn-success" onClick={async () => {
                         // Save as new record
                         const formData = new FormData();
                         const missionData = { description: editedDescription };
@@ -1443,7 +1408,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                       }}>
                         Save
                       </button>
-                    <button className="btn btn-sm btn-secondary no-pdf" onClick={() => {
+                      <button className="btn btn-sm btn-secondary" onClick={() => {
                         setEditingMissionId(null);
                         setEditedDescription('');
                         setEditedImage(null);
@@ -1585,7 +1550,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                     {isEditing ? (
                       <>
                         <button
-                          className="btn btn-sm btn-success no-pdf"
+                          className="btn btn-sm btn-success"
                           onClick={(e) => {
                             e.preventDefault();
                             handleSaveMission();
@@ -1594,7 +1559,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                           Save
                         </button>
                         <button
-                          className="btn btn-sm btn-secondary no-pdf"
+                          className="btn btn-sm btn-secondary"
                           onClick={() => {
                             setEditingMissionId(null);
                             setEditingMissionIndex(null);
@@ -1608,7 +1573,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                     ) : (
                       <div className="d-flex align-items-center gap-2">
                         <button
-                          className="btn btn-sm btn-primary no-pdf"
+                          className="btn btn-sm btn-primary"
                           onClick={() => handleEditMission(m.id, i)}
                         >
                           <FontAwesomeIcon icon={faEdit} />
@@ -1715,11 +1680,11 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                               onChange={(e) => setEditedCoreTitle(e.target.value)}
                             />
                             <div className="mt-2 d-flex gap-2">
-                              <button className="btn btn-sm btn-success no-pdf" onClick={handleSaveCore}>
+                              <button className="btn btn-sm btn-success" onClick={handleSaveCore}>
                                 Save
                               </button>
                               <button
-                                className="btn btn-sm btn-secondary no-pdf"
+                                className="btn btn-sm btn-secondary"
                                 onClick={() => {
                                   setEditingCoreId(null);
                                   setEditingCoreIndex(null);
@@ -1748,13 +1713,13 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                             <h6 className="fw-semibold mt-3">{item.title}</h6>
                             <div className="d-flex gap-2 mt-2">
                               <button
-                                className="btn btn-sm btn-primary no-pdf"
+                                className="btn btn-sm btn-primary"
                                 onClick={() => handleEditCore(block.id, i)}
                               >
                                 <FontAwesomeIcon icon={faEdit} />
                               </button>
                               <button
-                                className="btn btn-sm btn-danger no-pdf"
+                                className="btn btn-sm btn-danger"
                                 onClick={() => handleDeleteCore(block.id, i)}
                               >
                                 <FontAwesomeIcon icon={faTrash} />
@@ -1822,11 +1787,11 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                 {/* <button className="btn btn-sm btn-success ms-2" title="Duplicate" onClick={() => handleDuplicateCoreBlock(index)}>
                   <FontAwesomeIcon icon={faPlus} />
                 </button> */}
-                <button className="btn btn-sm btn-danger ms-2 no-pdf" title="Remove" onClick={() => handleRemoveCoreBlock(index)}>
+                <button className="btn btn-sm btn-danger ms-2" title="Remove" onClick={() => handleRemoveCoreBlock(index)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
                 <div className="d-flex gap-2 mt-2">
-                    <button className="btn btn-sm btn-success no-pdf" onClick={async () => {
+                    <button className="btn btn-sm btn-success" onClick={async () => {
                       // Save only core value, do not overwrite vision/mission
                       const formData = new FormData();
                       let coreData;
@@ -1858,13 +1823,12 @@ Together, we envision a world where progress is inclusive and opportunity is acc
               </div>
             </div>
           ))}
-          <button className="btn btn-sm btn-outline-primary no-pdf" onClick={() => handleAddCoreBlockToSet('main')}>
+          <button className="btn btn-sm btn-outline-primary" onClick={() => handleAddCoreBlockToSet('main')}>
             <FontAwesomeIcon icon={faPlus} />
           </button>
           
         </div>
       </div>
-    </div>
     </div>
     </>
   );

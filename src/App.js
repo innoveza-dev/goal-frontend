@@ -9,10 +9,11 @@ import CompanyProfileList from './pages/CompanyProfileList';
 import PersonalProfile from './pages/PersonalProfile';
 import VisionMissionCore from './pages/VisionMissionCore';
 import Goals from './pages/Goals';
+import CreateGoals from './pages/createGoals';
+import GoalsView from './pages/goalsView';
 import Dashboard from './pages/Dashboard';
 import AuthForm from './pages/AuthForm';
 import CompanyProfileView from './pages/CompanyProfileView';
-
 
 const isAuthenticated = () => !!localStorage.getItem('token');
 
@@ -36,11 +37,21 @@ function App() {
         }
       >
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="company-profile" element={<CompanyProfileList />} />
+        <Route
+          path="company-profile"
+          element={
+            localStorage.getItem('role') === 'superadmin'
+              ? <CompanyProfileList />
+              : <CompanyProfile />
+          }
+        />
         <Route path="company-profile/add" element={<CompanyProfile />} />
+        <Route path="company-profile/edit/:id" element={<CompanyProfile />} />
         <Route path="company-profile/view/:id" element={<CompanyProfileView />} />
         <Route path="vision-mission-core" element={<VisionMissionCore />} />
         <Route path="goals" element={<Goals />} />
+        <Route path="goals/create" element={<CreateGoals onSuccess={null} />} />
+        <Route path="goals/:year" element={<GoalsView />} />
         <Route path="personal-profile" element={<PersonalProfile />} />
       </Route>
     </Routes>
@@ -48,5 +59,3 @@ function App() {
 }
 
 export default App;
-
-

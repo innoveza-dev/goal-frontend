@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+
+// Dummy function to get user role. Replace with real auth/user context as needed.
+function getUserRole() {
+    // Example: return localStorage.getItem('role') || 'user';
+    // For now, just return a hardcoded value for demonstration.
+    return localStorage.getItem('role') || 'user';
+}
+
 const Sidebar = () => {
     const location = useLocation();
     const [isOrgSetupOpen, setIsOrgSetupOpen] = useState(false);
+    const userRole = getUserRole();
 
     const toggleOrgSetup = (e) => {
         e.preventDefault();
@@ -62,88 +71,42 @@ const Sidebar = () => {
                             <li className="menu-title" style={{ marginBottom: '15px', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>
                                 Menu
                             </li>
-
-                            <li style={{ marginBottom: '10px' }}>
-                                <Link
-                                    to="/dashboard"
-                                    className="waves-effect"
-                                    style={isActive('/dashboard') ? activeLinkStyle : normalDashboardStyle}
-                                >
-                                    <i className="mdi mdi-view-dashboard" style={{ marginRight: '10px' }}></i>
-                                    <span style={{ flexGrow: 1 }}>Dashboard</span>
-                                    <span style={{
-                                        backgroundColor: '#17a2b8',
-                                        color: 'white',
-                                        borderRadius: '12px',
-                                        padding: '2px 8px',
-                                        fontSize: '12px',
-                                        fontWeight: 'bold'
-                                    }}>3</span>
-                                </Link>
-                            </li>
-
-                            <li>
-                                <a
-                                    href="#"
-                                    onClick={toggleOrgSetup}
-                                    className={`has-arrow waves-effect ${isOrgSetupOpen ? 'active' : ''}`}
-                                    style={{
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        padding: '8px 10px',
-                                        color: isOrgSetupOpen ? '#4a90e2' : '#000',
-                                        fontWeight: isOrgSetupOpen ? 'bold' : 'normal',
-                                        borderRadius: '4px',
-                                        userSelect: 'none',
-                                        textDecoration: 'none',
-                                        marginBottom: '5px'
-                                    }}
-                                >
-                                    <i className="mdi mdi-book-open-page-variant" style={{ marginRight: '10px' }}></i>
-                                    <span>Organization Setup</span>
-                                    <span style={{ marginLeft: 'auto', fontSize: '12px', transform: isOrgSetupOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
-                                        ▶
-                                    </span>
-                                </a>
-
-                                {isOrgSetupOpen && (
-                                    <ul className="sub-menu" aria-expanded="true" style={{ listStyle: 'none', paddingLeft: '20px', marginTop: 0 }}>
-                                        {/* <li>
-                                            <Link
-                                                to="/company-profile"
-                                                style={isActive('/company-profile') ? activeSubMenuStyle : normalSubMenuStyle}
-                                            >
-                                                Company Profile
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                to="/personal-profile"
-                                                style={isActive('/personal-profile') ? activeSubMenuStyle : normalSubMenuStyle}
-                                            >
-                                                Personal Profile
-                                            </Link>
-                                        </li> */}
-                                        <li>
-                                            <Link
-                                                to="/vision-mission-core"
-                                                style={isActive('/vision-mission-core') ? activeSubMenuStyle : normalSubMenuStyle}
-                                            >
-                                                Vision | Mission | Core
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                to="/goals"
-                                                style={isActive('/goals') ? activeSubMenuStyle : normalSubMenuStyle}
-                                            >
-                                                Goals
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                )}
-                            </li>
+                            {/* Only show Company menu for supperadmin, otherwise show Vision/Mission/Core and Goals */}
+                            {userRole === 'superadmin' ? (
+                                <li style={{ marginBottom: '10px' }}>
+                                    <Link
+                                        to="/company-profile"
+                                        className="waves-effect"
+                                        style={isActive('/company-profile') ? activeLinkStyle : normalDashboardStyle}
+                                    >
+                                        <i className="mdi mdi-domain" style={{ marginRight: '10px' }}></i>
+                                        <span style={{ flexGrow: 1 }}>Company</span>
+                                    </Link>
+                                </li>
+                            ) : (
+                                <>
+                                    <li style={{ marginBottom: '10px' }}>
+                                        <Link
+                                            to="/vision-mission-core"
+                                            className="waves-effect"
+                                            style={isActive('/vision-mission-core') ? activeLinkStyle : normalDashboardStyle}
+                                        >
+                                            <i className="mdi mdi-view-dashboard" style={{ marginRight: '10px' }}></i>
+                                            <span style={{ flexGrow: 1 }}>Vision | Mission | Core</span>
+                                        </Link>
+                                    </li>
+                                    <li style={{ marginBottom: '10px' }}>
+                                        <Link
+                                            to="/goals"
+                                            className="waves-effect"
+                                            style={isActive('/goals') ? activeLinkStyle : normalDashboardStyle}
+                                        >
+                                            <i className="mdi mdi-view-dashboard" style={{ marginRight: '10px' }}></i>
+                                            <span style={{ flexGrow: 1 }}>Goals</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                     {/* Sidebar */}

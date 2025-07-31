@@ -53,7 +53,11 @@ const AuthForm = () => {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('role', user.role);
         showToast('success', 'Login successful');
-        navigate('/dashboard');
+        if(user.role === 'superadmin') {
+          navigate('/company-profile');
+        } else {
+          navigate('/vision-mission-core');
+        }
       } else {
         const res = await axios.post(`${API_BASE_URL}/user/signup`, formData);
         const newUser = res.data.user;

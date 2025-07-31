@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaYahoo, FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import API_BASE_URL from '../api';
@@ -18,9 +18,13 @@ const socialPlatforms = [
   { name: 'YouTube', icon: <FaYoutube size={30} color="#ff0000" /> },
 ];
 
+
+const getUserRole = () => localStorage.getItem('role') || 'user';
+
 const CompanyProfile = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
+  const { id } = useParams();
   const [logo, setLogo] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [socialLinks, setSocialLinks] = useState({
@@ -28,6 +32,9 @@ const CompanyProfile = () => {
   });
   const [editingSocial, setEditingSocial] = useState(null);
   const [tempLink, setTempLink] = useState('');
+  const userRole = getUserRole();
+  const [isEdit, setIsEdit] = useState(false);
+  const [formDataState, setFormDataState] = useState({});
 
 
   const showToast = (icon, title) => {
@@ -63,24 +70,71 @@ const CompanyProfile = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`${API_BASE_URL}/company-profiles`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      showToast('success', 'Company profile created successfully!');
+      if (isEdit && id) {
+        await axios.put(`${API_BASE_URL}/company-profiles/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        showToast('success', 'Company profile updated successfully!');
+      } else {
+        await axios.post(`${API_BASE_URL}/company-profiles`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        showToast('success', 'Company profile created successfully!');
+      }
       form.reset();
       setLogo(null);
       setLogoPreview(null);
       setSocialLinks({ Yahoo: '', Facebook: '', Instagram: '', Twitter: '', YouTube: '' });
-      navigate('/company-profile');
+      if(localStorage.getItem('role') === 'superadmin') {
+        navigate('/company-profile');
+      }else {
+        navigate('/vision-mission-core');
+      }
     } catch (error) {
       console.error(error);
-      const msg = error?.response?.data?.message || 'Error creating profile.';
+      const msg = error?.response?.data?.message || (isEdit ? 'Error updating profile.' : 'Error creating profile.');
       showToast('error', msg);
     }
   };
+
+  // Fetch profile data if editing
+  useEffect(() => {
+    if (id) {
+      setIsEdit(true);
+      (async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const res = await axios.get(`${API_BASE_URL}/company-profiles/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = res.data;
+          setFormDataState(data);
+          setLogoPreview(data.logoUrl ? `http://localhost:5000/companyLogos/${data.logoUrl}` : null);
+          setSocialLinks(data.socialLinks || { Yahoo: '', Facebook: '', Instagram: '', Twitter: '', YouTube: '' });
+          // Set form values
+          setTimeout(() => {
+            if (formRef.current) {
+              Object.keys(data).forEach(key => {
+                if (formRef.current[key] && data[key] && formRef.current[key].type !== 'file') {
+                  formRef.current[key].value = data[key];
+                }
+              });
+            }
+          }, 100);
+        } catch (err) {
+          showToast('error', 'Failed to load company profile for editing.');
+        }
+      })();
+    } else {
+      setIsEdit(false);
+    }
+  }, [id]);
 
   const openSocialPopup = (platform) => {
     setTempLink(socialLinks[platform] || '');
@@ -97,7 +151,7 @@ const CompanyProfile = () => {
 
   return (
     <div className="container py-5">
-      <h2 className="text-center text-primary fw-bold mb-4">Create Company Profile</h2>
+      <h2 className="text-center text-primary fw-bold mb-4">{isEdit ? 'Edit Company Profile' : 'Create Company Profile'}</h2>
       <div className="shadow p-4 rounded bg-light">
         <form ref={formRef} className="needs-validation" noValidate onSubmit={handleSubmit}>
           <div className="row mb-3">
@@ -138,10 +192,12 @@ const CompanyProfile = () => {
               <label className="form-label">Email ID</label>
               <input type="email" name="emailId" className="form-control" required />
             </div>
-            <div className="col-md-3">
-              <label className="form-label">Password</label>
-              <input type="password" name="password" className="form-control" required />
-            </div>
+            {userRole === 'superadmin' && (
+              <div className="col-md-3">
+                <label className="form-label">Password</label>
+                <input type="password" name="password" className="form-control" required />
+              </div>
+            )}
             <div className="col-md-3">
               <label className="form-label">Mobile Number</label>
               <input type="text" name="mobileNumber" className="form-control" required />
@@ -203,7 +259,7 @@ const CompanyProfile = () => {
           </div>
 
           <div className="text-center">
-            <button type="submit" className="btn btn-primary px-4">Create Profile</button>
+            <button type="submit" className="btn btn-primary px-4">{isEdit ? 'Update Profile' : 'Create Profile'}</button>
           </div>
         </form>
 
