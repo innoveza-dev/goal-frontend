@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 // Dummy function to get user role. Replace with real auth/user context as needed.
 function getUserRole() {

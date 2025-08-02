@@ -11,6 +11,8 @@ function getUserRole() {
     return localStorage.getItem('role') || 'user';
 }
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 function Header() {
     const navigate = useNavigate();
 
@@ -37,7 +39,7 @@ function Header() {
     }, []);
 
     const profileImage = profile?.photo
-        ? `http://localhost:5000/uploads/${profile.photo}`
+        ? `${API_BASE_URL}/uploads/${profile.photo}`
         : 'assets/images/users/avatar-1.jpg';
     const handleGoToProfile = () => {
         navigate('/personal-profile');
@@ -100,7 +102,7 @@ function Header() {
                                     if (userRole !== 'superadmin') {
                                         try {
                                             const token = localStorage.getItem('token');
-                                            const res = await fetch('http://localhost:5000/api/company-profiles', {
+                                            const res = await fetch(`${API_BASE_URL}/company-profiles`, {
                                                 headers: { Authorization: `Bearer ${token}` }
                                             });
                                             if (!res.ok) {

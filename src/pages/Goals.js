@@ -8,9 +8,9 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import API_BASE_URL from '../api';
+// import API_BASE_URL from '../api';
 
-
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const Goals = () => {
   const [goals, setGoals] = useState([]);
@@ -60,7 +60,7 @@ const Goals = () => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
       if (user && user.companyProfile && user.companyProfile.logoUrl) {
-        logoUrl = `http://localhost:5000/companyLogos/${user.companyProfile.logoUrl}`;
+        logoUrl = `${API_BASE_URL}/companyLogos/${user.companyProfile.logoUrl}`;
       }
     } catch {}
 
@@ -113,7 +113,7 @@ const Goals = () => {
       // Draw image with aspect ratio, center vertically in box
       if (images[0]) {
         try {
-          const imgUrl = `http://localhost:5000/uploads/${images[0]}`;
+          const imgUrl = `${API_BASE_URL}/uploads/${images[0]}`;
           const imgData = await new Promise((resolve) => {
             const img = new window.Image();
             img.crossOrigin = 'anonymous';
@@ -265,7 +265,7 @@ const Goals = () => {
                           img ? (
                             <img
                               key={i}
-                              src={`http://localhost:5000/uploads/${img}`}
+                              src={`${API_BASE_URL}/uploads/${img}`}
                               alt="goal"
                               style={{ width: 100, height: 80, objectFit: 'cover', borderRadius: 6 }}
                             />

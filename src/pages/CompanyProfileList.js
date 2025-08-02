@@ -9,7 +9,9 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Swal from 'sweetalert2';
-import API_BASE_URL from '../api';
+// import API_BASE_URL from '../api';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const companyTypes = [
   'Private Limited', 'Public Limited', 'Partnership', 'LLP',
@@ -260,7 +262,7 @@ const CompanyProfileList = () => {
                   <td>
                     {profile.logoUrl ? (
                       <img
-                        src={`http://localhost:5000/companyLogos/${profile.logoUrl}`}
+                        src={`${API_BASE_URL}/companyLogos/${profile.logoUrl}`}
                         alt="Logo"
                         width="50"
                         height="50"
@@ -344,7 +346,7 @@ const CompanyProfileList = () => {
                   <img
                     src={
                       editData.logoPreview ||
-                      `http://localhost:5000/companyLogos/${editData.logoUrl}`
+                      `${API_BASE_URL}/companyLogos/${editData.logoUrl}`
                     }
                     alt="Logo Preview"
                     height={100}

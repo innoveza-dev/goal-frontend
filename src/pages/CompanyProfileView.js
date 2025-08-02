@@ -4,12 +4,14 @@ import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import { FaYahoo, FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import API_BASE_URL from '../api';
+// import API_BASE_URL from '../api';
 
 const CompanyProfileView = () => {
     const { id } = useParams();
     const [profile, setProfile] = useState(null);
     const navigate = useNavigate();
+
+    const API_BASE_URL = process.env.REACT_APP_API_URL;
 
     const showToast = (icon, title) => {
         Swal.fire({
@@ -109,7 +111,7 @@ const CompanyProfileView = () => {
                         <div className="col-md-3 text-center">
                             {profile.logoUrl ? (
                                 <img
-                                    src={`http://localhost:5000/companyLogos/${profile.logoUrl}`}
+                                    src={`${API_BASE_URL}/companyLogos/${profile.logoUrl}`}
                                     alt="Company Logo"
                                     className="img-fluid rounded shadow-sm border p-2 bg-white"
                                     style={{ maxHeight: '150px', objectFit: 'contain' }}

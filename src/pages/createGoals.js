@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import API_BASE_URL from '../api';
+// import API_BASE_URL from '../api';
 import { FaArrowRight, FaPlus, FaPlusCircle } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const CreateGoals = ({ onSuccess }) => {
   const navigate = useNavigate();
@@ -51,11 +53,11 @@ const CreateGoals = ({ onSuccess }) => {
               }
               let previews = [];
               if (Array.isArray(goal.imageURL)) {
-                previews = goal.imageURL.map(img => `http://localhost:5000/uploads/${img}`);
+                previews = goal.imageURL.map(img => `${API_BASE_URL}/uploads/${img}`);
               } else if (typeof goal.imageURL === 'string') {
                 try {
                   const imgs = JSON.parse(goal.imageURL);
-                  previews = Array.isArray(imgs) ? imgs.map(img => `http://localhost:5000/uploads/${img}`) : [];
+                  previews = Array.isArray(imgs) ? imgs.map(img => `${API_BASE_URL}/uploads/${img}`) : [];
                 } catch { previews = []; }
               }
               return {
@@ -177,7 +179,7 @@ const CreateGoals = ({ onSuccess }) => {
           data.append('images', img);
         } else if (!img && form.previews && form.previews[idx] && form.previews[idx].startsWith('http')) {
           // Send a flag or the old image URL/name to backend to keep it
-          data.append('existingImages', form.previews[idx].replace('http://localhost:5000/uploads/', ''));
+          data.append('existingImages', form.previews[idx].replace('${API_BASE_URL}/uploads/', ''));
         }
       });
     }

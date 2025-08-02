@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 const GoalsView = () => {
   const navigate = useNavigate();
   const { year } = useParams();
@@ -11,7 +13,7 @@ const GoalsView = () => {
       try {
         const token = localStorage.getItem('token');
         const res = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'}/api/goals`,
+          `${API_BASE_URL}/api/goals`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -91,8 +93,7 @@ const GoalsView = () => {
                       img ? (
                         <img
                           key={i}
-                          src={`${
-                            process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'
+                          src={`${API_BASE_URL
                           }/uploads/${img}`}
                           alt="goal"
                           style={{

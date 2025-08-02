@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { FaSave } from 'react-icons/fa';
-import API_BASE_URL from '../api';
+// import API_BASE_URL from '../api';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const ProfileFormPage = () => {
   const formRef = useRef(null);
@@ -46,7 +48,7 @@ const ProfileFormPage = () => {
       window.dispatchEvent(reloadEvent);
 
       if (res.data.photo) {
-        setPreviewUrl(`http://localhost:5000/uploads/${res.data.photo}`);
+        setPreviewUrl(`${API_BASE_URL}/uploads/${res.data.photo}`);
       }
     } catch (err) {
       console.warn('No profile yet.');

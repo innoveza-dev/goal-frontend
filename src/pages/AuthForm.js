@@ -4,9 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import './AuthForm.css';
-import API_BASE_URL from '../api';
+// import API_BASE_URL from '../api';
 
 const AuthForm = () => {
+
+    const API_BASE_URL = process.env.REACT_APP_API_URL;
+
   const [isLogin, setIsLogin] = useState(false);
   const [formData, setFormData] = useState({
     companyName: '', firstName: '', lastName: '', email: '', mobile: '',

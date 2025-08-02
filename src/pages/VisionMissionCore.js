@@ -3,6 +3,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 const VisionSection = () => {
   const [visions, setVisions] = useState([]);
   const [submittedVisions, setSubmittedVisions] = useState([]);
@@ -326,7 +328,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      const res = await axios.get('http://localhost:5000/api/vmc', {
+      const res = await axios.get(`${API_BASE_URL}/vmc`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -384,7 +386,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      const res = await axios.get('http://localhost:5000/api/vmc', {
+      const res = await axios.get(`${API_BASE_URL}/vmc`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -460,7 +462,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      await axios.delete(`http://localhost:5000/api/vmc/${id}/item`, {
+      await axios.delete(`${API_BASE_URL}/vmc/${id}/item`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -520,7 +522,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       const token = localStorage.getItem('token');
 
       const res = await axios.put(
-        `http://localhost:5000/api/vmc/${editingVisionId}`,
+        `${API_BASE_URL}/vmc/${editingVisionId}`,
         formData,
         {
           headers: {
@@ -559,7 +561,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      await axios.delete(`http://localhost:5000/api/vmc/${id}/item`, {
+      await axios.delete(`${API_BASE_URL}/vmc/${id}/item`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -620,7 +622,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       const token = localStorage.getItem('token');
 
       const res = await axios.put(
-        `http://localhost:5000/api/vmc/${editingMissionId}`,
+        `${API_BASE_URL}/vmc/${editingMissionId}`,
         formData,
         {
           headers: {
@@ -713,7 +715,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
 
     const token = localStorage.getItem("token");
 
-    await axios.post("http://localhost:5000/api/vmc/vision", formData, {
+    await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
@@ -743,7 +745,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      const res = await axios.get('http://localhost:5000/api/vmc', {
+      const res = await axios.get(`${API_BASE_URL}/vmc`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -847,7 +849,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      await axios.delete(`http://localhost:5000/api/vmc/${id}/item`, {
+      await axios.delete(`${API_BASE_URL}/vmc/${id}/item`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -914,7 +916,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       }
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://localhost:5000/api/vmc/${editingCoreId}`,
+        `${API_BASE_URL}/vmc/${editingCoreId}`,
         formData,
         {
           headers: {
@@ -970,7 +972,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       formData.append('data', JSON.stringify(data));
 
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/vmc/vision', formData, {
+      await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -1123,7 +1125,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                         // core is omitted unless user adds/edits core values
                       }));
                       const token = localStorage.getItem('token');
-                      await axios.post('http://localhost:5000/api/vmc/vision', formData, {
+                      await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
                         headers: {
                           Authorization: `Bearer ${token}`,
                           'Content-Type': 'multipart/form-data',
@@ -1428,7 +1430,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                           core: coreData
                         }));
                         const token = localStorage.getItem('token');
-                        await axios.post('http://localhost:5000/api/vmc/vision', formData, {
+                        await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
                           headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'multipart/form-data',
@@ -1839,7 +1841,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                       }
                       formData.append('data', JSON.stringify({ core: [coreData] }));
                       const token = localStorage.getItem('token');
-                      await axios.post('http://localhost:5000/api/vmc/vision', formData, {
+                      await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
                         headers: {
                           Authorization: `Bearer ${token}`,
                           'Content-Type': 'multipart/form-data',

@@ -3,12 +3,14 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaYahoo, FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import API_BASE_URL from '../api';
+// import API_BASE_URL from '../api';
 
 const companyTypes = [
   'Private Limited', 'Public Limited', 'Partnership', 'LLP',
   'Sole Proprietorship', 'Government', 'NGO',
 ];
+
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const socialPlatforms = [
   { name: 'Yahoo', icon: <FaYahoo size={30} color="#430297" /> },
@@ -115,7 +117,7 @@ const CompanyProfile = () => {
           });
           const data = res.data;
           setFormDataState(data);
-          setLogoPreview(data.logoUrl ? `http://localhost:5000/companyLogos/${data.logoUrl}` : null);
+          setLogoPreview(data.logoUrl ? `${API_BASE_URL}${data.logoUrl}` : null);
           setSocialLinks(data.socialLinks || { Yahoo: '', Facebook: '', Instagram: '', Twitter: '', YouTube: '' });
           // Set form values
           setTimeout(() => {
