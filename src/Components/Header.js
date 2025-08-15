@@ -39,7 +39,7 @@ function Header() {
     }, []);
 
     const profileImage = profile?.photo
-        ? `${API_BASE_URL}/uploads/${profile.photo}`
+        ? `${API_BASE_URL}/api/api/uploads/${profile.photo}`
         : 'assets/images/users/avatar-1.jpg';
     const handleGoToProfile = () => {
         navigate('/personal-profile');
@@ -102,7 +102,7 @@ function Header() {
                                     if (userRole !== 'superadmin') {
                                         try {
                                             const token = localStorage.getItem('token');
-                                            const res = await fetch(`${API_BASE_URL}/company-profiles`, {
+                                            const res = await fetch(`${API_BASE_URL}/api/company-profiles`, {
                                                 headers: { Authorization: `Bearer ${token}` }
                                             });
                                             if (!res.ok) {

@@ -35,7 +35,7 @@ const ProfileFormPage = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/user/profile`, {
+      const res = await axios.get(`${API_BASE_URL}/api/user/profile`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
 
@@ -92,7 +92,7 @@ const ProfileFormPage = () => {
     });
 
     try {
-      await axios.post(`${API_BASE_URL}/user/profile`, payload, {
+      await axios.post(`${API_BASE_URL}/api/user/profile`, payload, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.getItem('token')}`,

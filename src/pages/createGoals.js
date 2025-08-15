@@ -31,7 +31,7 @@ const CreateGoals = ({ onSuccess }) => {
     if (editYear) {
       setLoading(true);
       const token = localStorage.getItem('token');
-      axios.get(`${API_BASE_URL}/goals`, {
+      axios.get(`${API_BASE_URL}/api/goals`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => {
@@ -187,7 +187,7 @@ const CreateGoals = ({ onSuccess }) => {
       const token = localStorage.getItem('token');
       if (editYear && form._id) {
         // Edit mode: update existing goal
-        await axios.put(`${API_BASE_URL}/goals/${form._id}`, data, {
+        await axios.put(`${API_BASE_URL}/api/goals/${form._id}`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
@@ -195,7 +195,7 @@ const CreateGoals = ({ onSuccess }) => {
         });
       } else {
         // Create mode: add new goal
-        await axios.post(`${API_BASE_URL}/goals`, data, {
+        await axios.post(`${API_BASE_URL}/api/goals`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
@@ -350,7 +350,7 @@ return (
                   if (formToDelete._id) {
                     try {
                       const token = localStorage.getItem('token');
-                      await axios.delete(`${API_BASE_URL}/goals/section/${formToDelete._id}`, {
+                      await axios.delete(`${API_BASE_URL}/api/goals/section/${formToDelete._id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                       });
                       showToast('success', 'Section deleted');

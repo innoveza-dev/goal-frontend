@@ -328,7 +328,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      const res = await axios.get(`${API_BASE_URL}/vmc`, {
+      const res = await axios.get(`${API_BASE_URL}/api/vmc`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -362,7 +362,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                 v.visionImageUrl.trim() !== '' &&
                 v.visionImageUrl !== defaultVisionUrl
               ) {
-                preview = `http://localhost:5000/${v.visionImageUrl.replace(/\\/g, '/')}`;
+                preview = `${API_BASE_URL}/${v.visionImageUrl.replace(/\\/g, '/')}`;
               } else {
                 preview = defaultVisionUrl;
               }
@@ -386,7 +386,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      const res = await axios.get(`${API_BASE_URL}/vmc`, {
+      const res = await axios.get(`${API_BASE_URL}/api/vmc`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -423,7 +423,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                 v.missionImageUrl.trim() !== '' &&
                 v.missionImageUrl !== defaultMissionUrl
               ) {
-                preview = `http://localhost:5000/${v.missionImageUrl.replace(/\\/g, '/')}`;
+                preview = `${API_BASE_URL}/${v.missionImageUrl.replace(/\\/g, '/')}`;
               } else {
                 preview = defaultMissionUrl;
               }
@@ -462,7 +462,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      await axios.delete(`${API_BASE_URL}/vmc/${id}/item`, {
+      await axios.delete(`${API_BASE_URL}/api/vmc/${id}/item`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -522,7 +522,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       const token = localStorage.getItem('token');
 
       const res = await axios.put(
-        `${API_BASE_URL}/vmc/${editingVisionId}`,
+        `${API_BASE_URL}/api/vmc/${editingVisionId}`,
         formData,
         {
           headers: {
@@ -561,7 +561,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      await axios.delete(`${API_BASE_URL}/vmc/${id}/item`, {
+      await axios.delete(`${API_BASE_URL}/api/vmc/${id}/item`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -622,7 +622,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       const token = localStorage.getItem('token');
 
       const res = await axios.put(
-        `${API_BASE_URL}/vmc/${editingMissionId}`,
+        `${API_BASE_URL}/api/vmc/${editingMissionId}`,
         formData,
         {
           headers: {
@@ -715,7 +715,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
 
     const token = localStorage.getItem("token");
 
-    await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
+    await axios.post(`${API_BASE_URL}/api/vmc/vision`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
@@ -745,7 +745,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      const res = await axios.get(`${API_BASE_URL}/vmc`, {
+      const res = await axios.get(`${API_BASE_URL}/api/vmc`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -774,7 +774,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
               ? parsed.map((v) => ({
                 title: v.title || v.coreTitle, // Support both new and old format
                 preview: v.coreImageUrl
-                  ? `http://localhost:5000/${v.coreImageUrl.replace(/\\/g, '/')}`
+                  ? `${API_BASE_URL}/${v.coreImageUrl.replace(/\\/g, '/')}`
                   : 'https://cdn-icons-png.flaticon.com/512/3062/3062634.png',
               }))
               : [],
@@ -849,7 +849,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
     try {
       const token = localStorage.getItem('token');
 
-      await axios.delete(`${API_BASE_URL}/vmc/${id}/item`, {
+      await axios.delete(`${API_BASE_URL}/api/vmc/${id}/item`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -916,7 +916,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       }
       const token = localStorage.getItem('token');
       await axios.put(
-        `${API_BASE_URL}/vmc/${editingCoreId}`,
+        `${API_BASE_URL}/api/vmc/${editingCoreId}`,
         formData,
         {
           headers: {
@@ -972,7 +972,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
       formData.append('data', JSON.stringify(data));
 
       const token = localStorage.getItem('token');
-      await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
+      await axios.post(`${API_BASE_URL}/api/vmc/vision`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -1125,7 +1125,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                         // core is omitted unless user adds/edits core values
                       }));
                       const token = localStorage.getItem('token');
-                      await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
+                      await axios.post(`${API_BASE_URL}/api/vmc/vision`, formData, {
                         headers: {
                           Authorization: `Bearer ${token}`,
                           'Content-Type': 'multipart/form-data',
@@ -1430,7 +1430,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                           core: coreData
                         }));
                         const token = localStorage.getItem('token');
-                        await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
+                        await axios.post(`${API_BASE_URL}/api/vmc/vision`, formData, {
                           headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'multipart/form-data',
@@ -1841,7 +1841,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
                       }
                       formData.append('data', JSON.stringify({ core: [coreData] }));
                       const token = localStorage.getItem('token');
-                      await axios.post(`${API_BASE_URL}/vmc/vision`, formData, {
+                      await axios.post(`${API_BASE_URL}/api/vmc/vision`, formData, {
                         headers: {
                           Authorization: `Bearer ${token}`,
                           'Content-Type': 'multipart/form-data',

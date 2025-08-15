@@ -73,7 +73,7 @@ const CompanyProfile = () => {
     try {
       const token = localStorage.getItem('token');
       if (isEdit && id) {
-        await axios.put(`${API_BASE_URL}/company-profiles/${id}`, formData, {
+        await axios.put(`${API_BASE_URL}/api/company-profiles/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ const CompanyProfile = () => {
         });
         showToast('success', 'Company profile updated successfully!');
       } else {
-        await axios.post(`${API_BASE_URL}/company-profiles`, formData, {
+        await axios.post(`${API_BASE_URL}/api/company-profiles`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
@@ -112,12 +112,12 @@ const CompanyProfile = () => {
       (async () => {
         try {
           const token = localStorage.getItem('token');
-          const res = await axios.get(`${API_BASE_URL}/company-profiles/${id}`, {
+          const res = await axios.get(`${API_BASE_URL}/api/company-profiles/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const data = res.data;
           setFormDataState(data);
-          setLogoPreview(data.logoUrl ? `${API_BASE_URL}${data.logoUrl}` : null);
+          setLogoPreview(data.logoUrl ? `${API_BASE_URL}/companyLogos/${data.logoUrl}` : null);
           setSocialLinks(data.socialLinks || { Yahoo: '', Facebook: '', Instagram: '', Twitter: '', YouTube: '' });
           // Set form values
           setTimeout(() => {

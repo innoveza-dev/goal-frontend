@@ -47,7 +47,7 @@ const AuthForm = () => {
 
     try {
       if (isLogin) {
-        const res = await axios.post(`${API_BASE_URL}/user/login`, {
+        const res = await axios.post(`${API_BASE_URL}/api/user/login`, {
           email: formData.email,
           password: formData.password,
         });
@@ -62,7 +62,7 @@ const AuthForm = () => {
           navigate('/vision-mission-core');
         }
       } else {
-        const res = await axios.post(`${API_BASE_URL}/user/signup`, formData);
+        const res = await axios.post(`${API_BASE_URL}/api/user/signup`, formData);
         const newUser = res.data.user;
         localStorage.setItem('signupUser', JSON.stringify(newUser));
         localStorage.setItem('user', JSON.stringify(newUser));

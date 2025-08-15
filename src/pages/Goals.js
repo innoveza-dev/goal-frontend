@@ -26,7 +26,7 @@ const Goals = () => {
   const fetchGoals = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${API_BASE_URL}/goals`, {
+      const res = await axios.get(`${API_BASE_URL}/api/goals`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

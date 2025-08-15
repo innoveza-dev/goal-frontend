@@ -39,7 +39,7 @@ const CompanyProfileView = () => {
                 return;
             }
 
-            const res = await axios.get(`${API_BASE_URL}/company-profiles/${id}`, {
+            const res = await axios.get(`${API_BASE_URL}/api/company-profiles/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

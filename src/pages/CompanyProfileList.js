@@ -64,7 +64,7 @@ const CompanyProfileList = () => {
   const fetchProfiles = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${API_BASE_URL}/company-profiles`, {
+      const res = await axios.get(`${API_BASE_URL}/api/company-profiles`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProfiles(res.data);
@@ -77,7 +77,7 @@ const CompanyProfileList = () => {
   const fetchAdminProfile = async (showModalOnLoad = false) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${API_BASE_URL}/company-profiles`, {
+      const res = await axios.get(`${API_BASE_URL}/api/company-profiles`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -173,7 +173,7 @@ const CompanyProfileList = () => {
       }
 
       const response = await axios.put(
-        `${API_BASE_URL}/company-profiles/${editData.id}`,
+        `${API_BASE_URL}/api/company-profiles/${editData.id}`,
         formData,
         {
           headers: {
@@ -198,7 +198,7 @@ const CompanyProfileList = () => {
     if (window.confirm('Are you sure you want to delete this profile?')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`${API_BASE_URL}/company-profiles/${id}`, {
+        await axios.delete(`${API_BASE_URL}/api/company-profiles/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchProfiles();
@@ -262,7 +262,7 @@ const CompanyProfileList = () => {
                   <td>
                     {profile.logoUrl ? (
                       <img
-                        src={`${API_BASE_URL}/companyLogos/${profile.logoUrl}`}
+                        src={`${API_BASE_URL}/api/companyLogos/${profile.logoUrl}`}
                         alt="Logo"
                         width="50"
                         height="50"
@@ -346,7 +346,7 @@ const CompanyProfileList = () => {
                   <img
                     src={
                       editData.logoPreview ||
-                      `${API_BASE_URL}/companyLogos/${editData.logoUrl}`
+                      `${API_BASE_URL}/api/companyLogos/${editData.logoUrl}`
                     }
                     alt="Logo Preview"
                     height={100}
