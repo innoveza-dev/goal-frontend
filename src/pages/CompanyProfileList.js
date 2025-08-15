@@ -262,17 +262,13 @@ const CompanyProfileList = () => {
                   <td>
                     {profile.logoUrl ? (
                       <img
-                        src={`${API_BASE_URL}/api/companyLogos/${profile.logoUrl}`}
+                        src={`${API_BASE_URL}/companyLogos/${profile.logoUrl}`}
                         alt="Logo"
                         width="50"
                         height="50"
                         className="rounded-circle object-fit-cover"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/default-logo.png';
-                        }}
                       />
-                    ) : 'N/A'}
+                    ) : ''}
                   </td>
                   <td>{profile.companyName}</td>
                   <td>{profile.emailId}</td>
@@ -346,15 +342,11 @@ const CompanyProfileList = () => {
                   <img
                     src={
                       editData.logoPreview ||
-                      `${API_BASE_URL}/api/companyLogos/${editData.logoUrl}`
+                      `${API_BASE_URL}/companyLogos/${editData.logoUrl}`
                     }
                     alt="Logo Preview"
                     height={100}
                     className="mt-2 rounded border"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/default-logo.png';
-                    }}
                   />
                 )}
               </Form.Group>
