@@ -37,7 +37,7 @@ const VisionSection = () => {
   const [additionalCardSets, setAdditionalCardSets] = useState([]); // Track additional card sets
   const [additionalCardForms, setAdditionalCardForms] = useState({}); // Track forms for each additional card set
 
-  const defaultMissionImage = 'https://gnitipu.in/front_assets/images/mission%20image.png';
+  const defaultMissionImage = `${API_BASE_URL}/missions/default_mission_image.png`;
   const defaultMissionDescription = `Our mission is to deliver innovative and high-quality solutions that enhance the lives of our customers.
 We are committed to excellence, ethical practices, and continuous improvement in everything we do.
 By fostering a culture of collaboration and inclusivity, we strive to build a sustainable future.
@@ -417,7 +417,7 @@ Together, we envision a world where progress is inclusive and opportunity is acc
             id: r.id,
             mission: parsed.map((v) => {
               let preview = '';
-              const defaultMissionUrl = 'https://gnitipu.in/front_assets/images/mission%20image.png';
+              const defaultMissionUrl = `${API_BASE_URL}/missions/default_mission_image.png`;
               if (
                 v.missionImageUrl &&
                 v.missionImageUrl.trim() !== '' &&
